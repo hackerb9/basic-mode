@@ -171,88 +171,75 @@ If nil, keywords separated by numbers will also be highlighted."
 (defconst basic-mode-version "0.6.0"
   "The current version of `basic-mode'.")
 
-(defvar basic-increase-indent-keywords-bol
-  (regexp-opt '("do" "for" "repeat" "sub" "while")
-              'symbols)
-  "Regexp string of keywords that increase indentation.
+(defvar-local basic-increase-indent-keywords-bol
+  '("do" "for" "repeat" "sub" "while")
+  "List of keywords that increase indentation.
 These keywords increase indentation when found at the
 beginning of a line.")
 
-(defvar basic-increase-indent-keywords-eol
-  (regexp-opt '("else" "then")
-              'symbols)
-  "Regexp string of keywords that increase indentation.
+(defvar-local basic-increase-indent-keywords-eol
+  '("else" "then")
+  "List of keywords that increase indentation.
 These keywords increase indentation when found at the
 end of a line.")
 
-(defvar basic-decrease-indent-keywords-bol
-  (regexp-opt '("else" "elseif" "endif" "end" "loop" "next" "until" "wend")
-              'symbols)
-  "Regexp string of keywords that decrease indentation.
+(defvar-local basic-decrease-indent-keywords-bol
+  '("else" "elseif" "endif" "end" "loop" "next" "until" "wend")
+  "List of keywords that decrease indentation.
 These keywords decrease indentation when found at the
 beginning of a line or after a statement separator (:).")
 
-(defvar basic-comment-and-string-faces
+(defvar-local basic-comment-and-string-faces
   '(font-lock-comment-face font-lock-comment-delimiter-face font-lock-string-face)
   "List of font-lock faces used for comments and strings.")
 
-(defvar basic-comment-regexp
+(defvar-local basic-comment-regexp
   "\\_<rem\\_>.*\n"
   "Regexp string that matches a comment until the end of the line.")
 
-(defvar basic-linenum-regexp
+(defvar-local basic-linenum-regexp
   "^[ \t]*\\([0-9]+\\)"
   "Regexp string of symbols to highlight as line numbers.")
 
-(defvar basic-label-regexp
+(defvar-local basic-label-regexp
   "^[ \t]*\\([a-zA-Z][a-zA-Z0-9_.]*:\\)"
-  "Regexp string of symbols to highlight as line numbers.")
+  "Regexp string of symbols to highlight as labels.")
 
-(defvar basic-constant-regexp
-  (regexp-opt '("false" "true")
-              'symbols)
-  "Regexp string of symbols to highlight as constants.")
+(defvar-local basic-constants
+  '("false" "true")
+  "List of symbols to highlight as constants.")
 
-(defvar basic-function-regexp
-  (regexp-opt '("abs" "asc" "atn" "cdbl" "cint" "chr$" "command$" "cos" "exp"
-                "fix" "hex$" "instr" "int" "lcase$" "len" "left$" "log" "log10"
-                "ltrim$" "mid$" "pi" "oct$" "right$" "rnd" "rtrim$" "sgn" "sin"
-                "space$" "sqr" "str$" "tab" "tan" "timer" "ucase$" "usr" "val")
-              'symbols)
-  "Regexp string of symbols to highlight as functions.")
+(defvar-local basic-functions
+  '("abs" "asc" "atn" "cdbl" "cint" "chr$" "command$" "cos" "exp"
+    "fix" "hex$" "instr" "int" "lcase$" "len" "left$" "log" "log10"
+    "ltrim$" "mid$" "pi" "oct$" "right$" "rnd" "rtrim$" "sgn" "sin"
+    "space$" "sqr" "str$" "tab" "tan" "timer" "ucase$" "usr" "val")
+  "List of symbols to highlight as functions.")
 
-(defvar basic-builtin-regexp
-  (regexp-opt '("and" "cls" "data" "input" "let" "line" "mat" "mod" "not" "or"
+(defvar-local basic-builtins
+  '("and" "cls" "data" "input" "let" "line" "mat" "mod" "not" "or"
                 "peek" "poke" "print" "read" "restore" "troff" "tron" "xor")
-              'symbols)
-  "Regexp string of symbols to highlight as builtins.")
+  "List of symbols to highlight as builtins.")
 
-(defvar basic-keyword-regexp
-  (regexp-opt '("as" "call" "def" "defbol" "defdbl" "defint" "defsng" "defstr"
-                "dim" "do" "else" "elseif" "end" "endif" "error" "exit" "fn"
-                "for" "gosub" "go sub" "goto" "go to" "if" "loop" "next" "on"
-                "step" "randomize" "repeat" "return" "sub" "then" "to" "until"
-                "wend" "while")
-              'symbols)
-  "Regexp string of symbols to highlight as keywords.")
+(defvar-local basic-keywords
+  '("as" "call" "def" "defbol" "defdbl" "defint" "defsng" "defstr"
+    "dim" "do" "else" "elseif" "end" "endif" "error" "exit" "fn"
+    "for" "gosub" "go sub" "goto" "go to" "if" "loop" "next" "on"
+    "step" "randomize" "repeat" "return" "sub" "then" "to" "until"
+    "wend" "while")
+  "List of symbols to highlight as keywords.")
 
-(defvar basic-type-regexp
-  (regexp-opt '("boolean" "double" "integer" "single" "string")
-              'symbols)
-  "Regexp string of symbols to highlight as types.")
+(defvar-local basic-types
+  '("boolean" "double" "integer" "single" "string")
+  "List of symbols to highlight as types.")
 
-(defvar basic-font-lock-keywords
-  (list (list basic-comment-regexp 0 'font-lock-comment-face)
-        (list basic-linenum-regexp 0 'font-lock-constant-face)
-        (list basic-label-regexp 0 'font-lock-constant-face)
-        (list basic-constant-regexp 0 'font-lock-constant-face)
-        (list basic-keyword-regexp 0 'font-lock-keyword-face)
-        (list basic-type-regexp 0 'font-lock-type-face)
-        (list basic-function-regexp 0 'font-lock-function-name-face)
-        (list basic-builtin-regexp 0 'font-lock-builtin-face))
-  "Describes how to syntax highlight keywords in `basic-mode' buffers.")
+(defvar-local basic-font-lock-keywords
+  nil
+  "Describes how to syntax highlight keywords in `basic-mode' buffers.
+This is initialized by basic-mode-initialize from lists that may be
+modified in derived submodes.")
 
-(defvar basic-font-lock-syntax
+(defvar-local basic-font-lock-syntax
   '(("0123456789" . "."))
   "Syntax alist used to set the Font Lock syntax table.")
 
@@ -728,7 +715,7 @@ If VARIABLE is not found, return nil."
 ;; BASIC mode:
 ;; ----------------------------------------------------------------------------
 
-(defvar basic-mode-map
+(defvar-local basic-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map "\C-c\C-f" 'basic-format-code)
     (define-key map "\r" 'basic-newline-and-number)
@@ -737,7 +724,7 @@ If VARIABLE is not found, return nil."
     map)
   "Keymap used in ‘basic-mode'.")
 
-(defvar basic-mode-syntax-table
+(defvar-local basic-mode-syntax-table
   (let ((table (make-syntax-table)))
     (modify-syntax-entry (cons ?* ?/)   ".   " table)   ; Operators * + , - . /
     (modify-syntax-entry (cons ?< ?>)   ".   " table)   ; Operators < = > 
@@ -798,6 +785,12 @@ can be customized with variable
   "Initializations for sub-modes of basic-mode.
 This is called by basic-mode on startup and by its derived modes
 after making customizations to font-locking and syntax tables."
+  (setq-local basic-constant-regexp (regexp-opt basic-constants 'symbols)
+	      basic-function-regexp (regexp-opt basic-functions 'symbols)
+	      basic-builtin-regexp (regexp-opt basic-builtins 'symbols)
+	      basic-keyword-regexp (regexp-opt basic-keywords 'symbols)
+	      basic-type-regexp (regexp-opt basic-types 'symbols))
+
   (setq-local basic-font-lock-keywords
 	(list (list basic-comment-regexp 0 'font-lock-comment-face)
               (list basic-linenum-regexp 0 'font-lock-constant-face)
@@ -807,6 +800,7 @@ after making customizations to font-locking and syntax tables."
               (list basic-type-regexp 0 'font-lock-type-face)
               (list basic-function-regexp 0 'font-lock-function-name-face)
               (list basic-builtin-regexp 0 'font-lock-builtin-face)))
+
   (if basic-syntax-highlighting-require-separator
       (setq-local font-lock-defaults (list basic-font-lock-keywords nil t))
     (setq-local font-lock-defaults (list basic-font-lock-keywords nil t basic-font-lock-syntax)))
@@ -820,29 +814,26 @@ At a minimum, this is missing keywords used in the TRS-80 Model 100
 BASIC and TRS-80 Extended Color Computer BASIC. 
 Derived from `basic-mode'."
 
-  (setq-local basic-function-regexp
-	      (regexp-opt '("abs" "asc" "atn" "cdbl" "cint" "chr$" "cos" "csng"
-			    "erl" "err" "exp" "fix" "fre" "inkey$" "inp" "int"
-			    "left$" "len" "log" "mem" "mid$" "point" "pos"
-			    "reset" "right$" "set" "sgn" "sin" "sqr" "str$" 
-			    "string$" "tan" "time$" "usr" "val" "varptr")
-		    'symbols))
+  (setq-local basic-functions
+	      '("abs" "asc" "atn" "cdbl" "cint" "chr$" "cos" "csng"
+		"erl" "err" "exp" "fix" "fre" "inkey$" "inp" "int"
+		"left$" "len" "log" "mem" "mid$" "point" "pos"
+		"reset" "right$" "set" "sgn" "sin" "sqr" "str$" 
+		"string$" "tan" "time$" "usr" "val" "varptr"))
 
-  (setq-local basic-builtin-regexp
-	      (regexp-opt '("?" "auto" "clear" "cload" "cload?" "cls"
-			    "data" "delete" "edit" "input" "input #" "let" 
-			    "list" "llist" "lprint" "lprint tab" "lprint using"
-			    "new" "mod" "not" "or" "out" "peek" "poke"
-			    "print" "print tab" "print using" 
-			    "read" "restore" "resume" "system" "troff" "tron")
-			  'symbols))
-
-  (setq-local basic-keyword-regexp
-	      (regexp-opt '("as" "call" "defdbl" "defint" "defsng" "defstr"
-			    "dim" "do" "else" "end" "error" "for"
-			    "gosub" "go sub" "goto" "go to" "if" "next" "on"
-			    "step" "random" "return" "then" "to")
-			  'symbols))
+  (setq-local basic-builtins
+	      '("?" "auto" "clear" "cload" "cload?" "cls"
+		"data" "delete" "edit" "input" "input #" "let" 
+		"list" "llist" "lprint" "lprint tab" "lprint using"
+		"new" "mod" "not" "or" "out" "peek" "poke"
+		"print" "print tab" "print using" 
+		"read" "restore" "resume" "system" "troff" "tron"))
+		
+  (setq-local basic-keywords
+	      '("as" "call" "defdbl" "defint" "defsng" "defstr"
+		"dim" "do" "else" "end" "error" "for"
+		"gosub" "go sub" "goto" "go to" "if" "next" "on"
+		"step" "random" "return" "then" "to"))
 
   ;; Treat ? and # as part of identifier ("cload?" and "input #")
   (modify-syntax-entry ?? "w   " basic-mode-syntax-table)

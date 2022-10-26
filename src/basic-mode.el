@@ -918,16 +918,16 @@ Derived from `basic-mode'."
   (setq-local basic-builtins
 	      '("?" "auto" "clear" "cload" "cload?" "cls"
 		"data" "delete" "edit" "input" "input #" "let" 
-		"list" "llist" "lprint"
+		"list" "llist" "lprint" "lprint tab" "lprint using"
 		"new" "mod" "not" "or" "out" "peek" "poke"
-		"print" "print #" "read" "restore"
-		"resume" "system" "troff" "tron" "using"))
+		"print" "print tab" "print using" 
+		"read" "restore" "resume" "system" "troff" "tron"))
 		
   (setq-local basic-keywords
-	      '("as" "call" "cont" "defdbl" "defint" "defsng" "defstr"
+	      '("as" "call" "defdbl" "defint" "defsng" "defstr"
 		"dim" "do" "else" "end" "error" "for"
 		"gosub" "go sub" "goto" "go to" "if" "next" "on"
-		"step" "random" "return"  "run" "stop" "then" "to"))
+		"step" "random" "return" "then" "to"))
 
   ;; Treat ? and # as part of identifier ("cload?" and "input #")
   (modify-syntax-entry ?? "w   " basic-mode-syntax-table)

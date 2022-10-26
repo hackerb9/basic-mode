@@ -819,25 +819,54 @@ Derived from `basic-mode'."
 		"erl" "err" "exp" "fix" "fre" "inkey$" "inp" "int"
 		"left$" "len" "log" "mem" "mid$" "point" "pos"
 		"reset" "right$" "set" "sgn" "sin" "sqr" "str$" 
-		"string$" "tan" "time$" "usr" "val" "varptr"))
+		"string$" "tab" "tan" "time$" "usr" "val" "varptr"))
 
   (setq-local basic-builtins
 	      '("?" "auto" "clear" "cload" "cload?" "cls"
 		"data" "delete" "edit" "input" "input #" "let" 
-		"list" "llist" "lprint" "lprint tab" "lprint using"
+		"list" "llist" "lprint"
 		"new" "mod" "not" "or" "out" "peek" "poke"
-		"print" "print tab" "print using" 
-		"read" "restore" "resume" "system" "troff" "tron"))
+		"print" "print #" "read" "restore"
+		"resume" "system" "troff" "tron" "using"))
 		
   (setq-local basic-keywords
-	      '("as" "call" "defdbl" "defint" "defsng" "defstr"
+	      '("as" "call" "cont" "defdbl" "defint" "defsng" "defstr"
 		"dim" "do" "else" "end" "error" "for"
 		"gosub" "go sub" "goto" "go to" "if" "next" "on"
-		"step" "random" "return" "then" "to"))
+		"step" "random" "return"  "run" "stop" "then" "to"))
 
   ;; Treat ? and # as part of identifier ("cload?" and "input #")
   (modify-syntax-entry ?? "w   " basic-mode-syntax-table)
   (modify-syntax-entry ?# "w   " basic-mode-syntax-table)
+
+  (basic-mode-initialize))
+
+(define-derived-mode basic-m100-mode basic-trs80-mode "Basic[M100]"
+  "Programming mode for BASIC for the TRS-80 Model 100.
+It is a test of inheriting and modifying the TRS-80 mode. 
+Derived from `basic-trs80-mode'."
+
+  (mapcar (lambda (x) (delete x basic-functions))
+	  '("mem" "point" "set" "random" "reset" "usr"))
+  (nconc basic-functions
+	 '("csrlin" "date$" "day$" "eof" "himem"
+	   "instr" "input$" "maxfiles" "maxram"
+	   "rnd" "space$" "time$"))
+
+  (mapcar (lambda (x) (delete x basic-builtins))
+	  '("auto" "delete" "system" "troff" "tron"))
+  (nconc basic-builtins 
+	 '("beep" "cloadm" "close" "csave" "csavem"
+	   "files" "ipl" "key" "kill" "lcopy" "line"
+	   "load" "loadm"
+	   "menu" "merge" "motor" "name" "open"
+	   "power" "preset" "print @" "pset" "save" "savem"
+	   "screen" "sound"))
+		
+  (nconc basic-keywords
+	 '("com" "mdm" "on com gosub" "on error goto"
+	   "on key gosub" "on mdm gosub" "on time$"
+	   "runm" "time"))
 
   (basic-mode-initialize))
 

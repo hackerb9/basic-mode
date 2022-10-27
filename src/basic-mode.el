@@ -338,12 +338,12 @@ while other keywords do it when found at the beginning of a line."
     (basic-code-search-backward)
     (unless (bobp)
       ;; Keywords at the end of the line
-      (if (basic-match-symbol-at-point-p basic-increase-indent-keywords-eol)
+      (if (basic-match-symbol-at-point-p basic-increase-indent-keywords-eol-regexp)
           't
         ;; Keywords at the beginning of the line
         (beginning-of-line)
         (re-search-forward "[^0-9 \t\n]" (point-at-eol) t)
-        (basic-match-symbol-at-point-p basic-increase-indent-keywords-bol)))))
+        (basic-match-symbol-at-point-p basic-increase-indent-keywords-bol-regexp)))))
 
 (defun basic-decrease-indent-p ()
   "Return non-nil if indentation should be decreased.
@@ -352,13 +352,13 @@ of a line or statement, see `basic-decrease-indent-keywords-bol'."
   (save-excursion
     (beginning-of-line)
     (re-search-forward "[^0-9 \t\n]" (point-at-eol) t)
-    (or (basic-match-symbol-at-point-p basic-decrease-indent-keywords-bol)
+    (or (basic-match-symbol-at-point-p basic-decrease-indent-keywords-bol-regexp)
         (let ((match nil))
           (basic-code-search-backward)
           (beginning-of-line)
           (while (and (not match)
                       (re-search-forward ":[ \t\n]*" (point-at-eol) t))
-            (setq match (basic-match-symbol-at-point-p basic-decrease-indent-keywords-bol)))
+            (setq match (basic-match-symbol-at-point-p basic-decrease-indent-keywords-bol-regexp)))
           match))))
 
 (defun basic-current-indent ()
@@ -785,6 +785,13 @@ can be customized with variable
   "Initializations for sub-modes of basic-mode.
 This is called by basic-mode on startup and by its derived modes
 after making customizations to font-locking and syntax tables."
+  (setq-local basic-increase-indent-keywords-bol-regexp
+	      (regexp-opt basic-increase-indent-keywords-bol 'symbols))
+  (setq-local basic-increase-indent-keywords-eol-regexp
+	      (regexp-opt basic-increase-indent-keywords-eol 'symbols))
+  (setq-local basic-decrease-indent-keywords-bol-regexp
+	      (regexp-opt basic-decrease-indent-keywords-bol 'symbols))
+
   (setq-local basic-constant-regexp (regexp-opt basic-constants 'symbols)
 	      basic-function-regexp (regexp-opt basic-functions 'symbols)
 	      basic-builtin-regexp (regexp-opt basic-builtins 'symbols)

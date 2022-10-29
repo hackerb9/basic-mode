@@ -243,6 +243,10 @@ modified in derived submodes.")
   '(("0123456789" . "."))
   "Syntax alist used to set the Font Lock syntax table.")
 
+(defconst basic-font-lock-syntax
+  '(("0123456789" . "."))
+  "Syntax alist used to set the Font Lock syntax table.")
+
 ;; ----------------------------------------------------------------------------
 ;; Indentation:
 ;; ----------------------------------------------------------------------------

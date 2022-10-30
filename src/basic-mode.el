@@ -868,6 +868,7 @@ can be customized with variable
   "Initializations for sub-modes of basic-mode.
 This is called by basic-mode on startup and by its derived modes
 after making customizations to font-locking and syntax tables."
+
   (setq-local basic-increase-indent-keywords-bol-regexp
 	      (regexp-opt basic-increase-indent-keywords-bol 'symbols))
   (setq-local basic-increase-indent-keywords-eol-regexp

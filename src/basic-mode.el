@@ -942,13 +942,13 @@ Derived from `basic-mode'."
 	      "new" "mod" "not" "or" "out" "peek" "poke"
 	      "print" "print tab" "print using"
 	      "read" "restore" "resume" "system" "troff" "tron"))
-  
+
   (setq basic-keywords
 	    '("as" "call" "defdbl" "defint" "defsng" "defstr"
 	      "dim" "do" "else" "end" "error" "for"
 	      "gosub" "goto" "go to" "if" "next" "on"
 	      "step" "random" "return" "then" "to"))
-  
+
   ;; Treat ? and # as part of identifier ("cload?" and "input #")
   (modify-syntax-entry ?? "w   " basic-mode-syntax-table)
   (modify-syntax-entry ?# "w   " basic-mode-syntax-table)
@@ -985,7 +985,7 @@ PC-8300) are also supported by this mode."
   ;;		20 OPEN "FOO" FOR INPUT AS #1
   ;;		30 OPEN "BAR" FOR OUTPUT AS #2
   ;;		40 NAME "BAZ" AS "QUUX"
-  
+
   ;; * TODO: strings with embedded spaces ("ON COM GOSUB") should use
   ;;   '\s+' for any amount of white space, but regexp-opt doesn't
   ;;   have a way to do that.
@@ -1004,8 +1004,8 @@ PC-8300) are also supported by this mode."
 	  "eqv" "files" "imp" "input" "input #" "ipl" "key" "kill"
 	  "lcopy" "let" "line" "list" "llist" "load" "loadm" "lprint"
 	  "lprint tab" "lprint using" "menu" "merge" "mod" "motor"
-	  "name" "new" "not" "open" "or" "out" "output" "peek" "poke" 
-	  "power" "preset" "print" "print @" "print tab" "print using" 
+	  "name" "new" "not" "open" "or" "out" "output" "peek" "poke"
+	  "power" "preset" "print" "print @" "print tab" "print using"
 	  "pset" "read" "restore" "resume" "save" "savem" "screen" "sound"
 	  "xor"))
 
@@ -1013,8 +1013,8 @@ PC-8300) are also supported by this mode."
 	'("as" "call" "com" "defdbl" "defint" "defsng" "defstr" "dim"
 	  "else" "end" "error" "for" "go to" "gosub" "goto" "if" "mdm"
 	  "next" "off" "on" "on com gosub" "on error goto" "on key gosub"
-	  "on mdm gosub" "on time$" "random" "return" "run" "runm" 
-	  "sound off" "sound on" "step" "stop" "then" 
+	  "on mdm gosub" "on time$" "random" "return" "run" "runm"
+	  "sound off" "sound on" "step" "stop" "then"
 	  "time$ on" "time$ off" "time$ stop" "to"))
 
   ;; The Model 100 Disk/Video Interface adds a few BASIC commands
@@ -1053,6 +1053,113 @@ PC-8300) are also supported by this mode."
 	      display-fill-column-indicator-column 40)
 
   ;; Show an indicator of the Model 100's line width, if possible.
+  (condition-case nil
+      (display-fill-column-indicator-mode 1)
+    (error nil))
+
+  (basic-mode-initialize))
+
+
+;;;###autoload
+(define-derived-mode basic-coco-mode basic-mode "Basic[CoCo]"
+  "Programming mode for BASIC for the TRS-80 Color Computer.
+Supports the TRS-80 Extended Color BASIC for the Color Computer 1 and 2.
+The Color Computer 3 is not yet supported."
+
+  (setq basic-functions
+
+	'("abs" "asc" "chr$" "eof" "inkey$" "int" "joystk"
+	  "left$" "len" "point" "right$" "rnd" 
+	  "sgn" "tab" "usr" "val"))
+
+  (setq basic-builtins
+
+	'("?" "and" "audio on" "audio off" "clear" "cload" "cloadm"
+	  "close" "cls" "cont" "csave" "csavem" "data" 
+	  "input" "input #" "list" "llist" "load" "loadm" 
+	  "mem" "motor on" "motor off" "new" "not" "open" "or" 
+	  "peek" "poke" "print" "print @" "print tab"
+	  "read" "reset" "restore" "save" "savem" "set" "skipf" "sound"))
+
+  (setq basic-keywords
+
+	'("dim" "else" "end" "exec" "for" "fn" "go to" "gosub" "goto"
+	  "if" "next" "off" "on" "return" "run" "step" "stop" "then"
+	  "to"))
+
+  (setq basic-keywords
+	;; This really ought to be a regular expression, but we don't
+	;; have that implemented yet. (Note: there can be no space
+	;; after USR and only a single digit is allowed).
+	(append basic-keywords
+		'()))
+
+  ;; EXTENDED Color BASIC 
+  (setq basic-functions
+	(append basic-functions
+	'("atn" "cos" "exp" "fix" "hex$" "instr" "log" "mid$" "pos"
+	  "ppoint" "sin" "sqr" "str$" "string$" "tan" "varptr" )))
+
+  (setq basic-builtins
+	(append basic-builtins
+		'("circle" "color" "del" "dload" "draw" "edit" "get"
+		  "let" "line" "line input" "paint" "pclear" "pcls"
+		  "pcopy" "play" "pmode" "preset" "pset" "put" "print
+		  using" "pset" "put" "renum" "screen" "timer" "troff"
+		  "tron" "using")))
+
+  ;; EXTENDED Color BASIC additions that ought to be regular expressions.
+  ;; (Not yet implemented in basic-mode-initialize).
+  (setq basic-functions
+	(append basic-functions
+
+		'("usr0" "usr1" "usr2" "usr3" "usr4"
+		  "usr5" "usr6" "usr7" "usr8" "usr9"
+
+		  "fn a" "fn b" "fn c" "fn d" "fn e" "fn f" "fn g" "fn h"
+		  "fn i" "fn j" "fn k" "fn l" "fn m" "fn n" "fn o" "fn p"
+		  "fn q" "fn r" "fn s" "fn t" "fn u" "fn v" "fn w" "fn x"
+		  "fn y" "fn z"
+
+		  "fna" "fnb" "fnc" "fnd" "fne" "fnf" "fng" "fnh" "fni"
+		  "fnj" "fnk" "fnl" "fnm" "fnn" "fno" "fnp" "fnq" "fnr"
+		  "fns" "fnt" "fnu" "fnv" "fnw" "fnx" "fny" "fnz")))
+
+  (setq basic-keywords
+	(append basic-keywords
+		;; Note: while USR is limited to a single digit, the
+		;; CoCo allows longer fn names and they can be
+		;; separated by a space.
+		'("def usr" "defusr"
+		  "def usr0" "def usr1" "def usr2" "def usr3" "def usr4"
+		  "def usr5" "def usr6" "def usr7" "def usr8" "def usr9"
+		  "defusr0" "defusr1" "defusr2" "defusr3" "defusr4"
+		  "defusr5" "defusr6" "defusr7" "defusr8" "defusr9"
+
+		  "def fna" "def fnb" "def fnc" "def fnd" "def fne" "def fnf" 
+		  "def fng" "def fnh" "def fni" "def fnj" "def fnk" "def fnl"
+		  "def fnm" "def fnn" "def fno" "def fnp" "def fnq" "def fnr"
+p		  "def fns" "def fnt" "def fnu" "def fnv" "def fnw" "def fnx"
+		  "def fny" "def fnz"
+
+		  "def fn a" "def fn b" "def fn c" "def fn d" "def fn e"
+		  "def fn f" "def fn g" "def fn h" "def fn i" "def fn j"
+		  "def fn k" "def fn l" "def fn m" "def fn n" "def fn o"
+		  "def fn p" "def fn q" "def fn r" "def fn s" "def fn t"
+		  "def fn u" "def fn v" "def fn w" "def fn x" "def fn y"
+		  "def fn z")))
+
+  ;; Treat ? and # as part of identifier ("cload?" and "input #")
+  (modify-syntax-entry ?? "w   " basic-mode-syntax-table)
+  (modify-syntax-entry ?# "w   " basic-mode-syntax-table)
+
+  ;; Adapt to coding for a 32 column screen
+  (setq-local comment-start "'" 	; Shorter than "REM"
+	      comment-column 12
+	      fill-column 32
+	      display-fill-column-indicator-column 32)
+
+  ;; Show an indicator of the CoCo's line width, if possible.
   (condition-case nil
       (display-fill-column-indicator-mode 1)
     (error nil))

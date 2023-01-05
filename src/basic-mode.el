@@ -1072,7 +1072,6 @@ The Color Computer 3 is not yet supported."
 	  "sgn" "tab" "usr" "val"))
 
   (setq basic-builtins
-
 	'("?" "and" "audio on" "audio off" "clear" "cload" "cloadm"
 	  "close" "cls" "cont" "csave" "csavem" "data" 
 	  "input" "input #" "list" "llist" "load" "loadm" 
@@ -1081,7 +1080,6 @@ The Color Computer 3 is not yet supported."
 	  "read" "reset" "restore" "save" "savem" "set" "skipf" "sound"))
 
   (setq basic-keywords
-
 	'("dim" "else" "end" "exec" "for" "fn" "go to" "gosub" "goto"
 	  "if" "next" "off" "on" "return" "run" "step" "stop" "then"
 	  "to"))
@@ -1103,9 +1101,9 @@ The Color Computer 3 is not yet supported."
 	(append basic-builtins
 		'("circle" "color" "del" "dload" "draw" "edit" "get"
 		  "let" "line" "line input" "paint" "pclear" "pcls"
-		  "pcopy" "play" "pmode" "preset" "pset" "put" "print
-		  using" "pset" "put" "renum" "screen" "timer" "troff"
-		  "tron" "using")))
+		  "pcopy" "play" "pmode" "preset" "pset" "put"
+		  "print using" "pset" "put" "renum" "screen" "timer" 
+		  "troff" "tron" "using")))
 
   ;; EXTENDED Color BASIC additions that ought to be regular expressions.
   ;; (Not yet implemented in basic-mode-initialize).

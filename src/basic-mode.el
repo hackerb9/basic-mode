@@ -936,12 +936,11 @@ Derived from `basic-mode'."
 	      "string$" "tab" "tan" "time$" "usr" "val" "varptr"))
 
   (setq basic-builtins
-	    '("?" "auto" "clear" "cload" "cload?" "cls"
-	      "data" "delete" "edit" "input" "input #" "let"
-	      "list" "llist" "lprint" "lprint tab" "lprint using"
-	      "new" "mod" "not" "or" "out" "peek" "poke"
-	      "print" "print tab" "print using"
-	      "read" "restore" "resume" "system" "troff" "tron"))
+	    '("?" "auto" "clear" "cload" "cload?" "cls" "data"
+	      "delete" "edit" "input" "input #" "let" "list" "llist"
+	      "lprint" "new" "mod" "not" "or" "out" "peek" "poke"
+	      "print" "tab" "read" "restore" "resume" "system" "troff"
+	      "tron" "using"))
 
   (setq basic-keywords
 	    '("as" "call" "defdbl" "defint" "defsng" "defstr"
